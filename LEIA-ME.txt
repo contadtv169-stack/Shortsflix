@@ -1,0 +1,17 @@
+SHORTS FLIX - como colocar no ar
+
+BANCO DE DADOS (Supabase) - já conectado em js/config.js
+1) Supabase > SQL Editor > New query > cole TODO o supabase.sql > Run.
+
+LOGIN (Firebase)
+2) Firebase Console > Authentication > ative "E-mail/senha" e "Google".
+3) Authentication > Settings > Authorized domains: adicione o domínio do seu app.
+
+VÍDEOS, FOTOS E BANNERS
+4) O supabase.sql cria o bucket "media".
+
+ANÚNCIOS
+5) Troque DEFAULT_AD_LINK no js/config.js pelo seu Direct Link do Monetag.
+
+SEGURANÇA
+As políticas de acesso do SQL são abertas para testes. Antes de uso público real, configure regras por usuário e revise permissões do banco.
