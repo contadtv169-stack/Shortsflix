@@ -1,23 +1,6 @@
-const C='shortsflix-v5',F=['./','index.html','css/style.css','js/app.js','js/config.js','manifest.json','icons/icon.svg'];
+const C='shortsflix-v6',F=['./','index.html','css/style.css','js/app.js','js/config.js','manifest.json','icons/icon.svg'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(C).then(c=>c.addAll(F)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==C).map(x=>caches.delete(x)))));self.clients.claim()});
-self.addEventListener('fetch',e=>{
-  const r=e.request;if(r.method!=='GET'||new URL(r.url).origin!==location.origin)return;
-  e.respondWith(fetch(r).then(res=>{const cp=res.clone();caches.open(C).then(c=>c.put(r,cp));return res}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))));
-});
-self.addEventListener('push',e=>{
-  let d={};try{d=e.data.json()}catch(_){}
-  const x=d.data||d;
-  e.waitUntil(clients.matchAll({type:'window'}).then(l=>{
-    if(l.some(c=>c.visibilityState==='visible'))return;
-    return self.registration.showNotification(x.title||'SHORTS FLIX',{body:x.body||'',icon:'icons/icon-192.png',badge:'icons/icon-192.png',tag:x.tag,data:{url:x.url||'./'}});
-  }));
-});
-self.addEventListener('notificationclick',e=>{
-  e.notification.close();
-  const u=new URL(e.notification.data.url||'./',self.registration.scope).href;
-  e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(l=>{
-    for(const c of l){if('focus'in c){c.navigate(u);return c.focus()}}
-    return clients.openWindow(u);
-  }));
-});
+self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET'||new URL(r.url).origin!==location.origin)return;e.respondWith(fetch(r).then(res=>{const cp=res.clone();caches.open(C).then(c=>c.put(r,cp));return res}).catch(()=>caches.match(r).then(m=>m||caches.match('index.html'))))});
+self.addEventListener('push',e=>{let d={};try{d=e.data.json()}catch(_){}const x=d.data||d;e.waitUntil(clients.matchAll({type:'window'}).then(l=>{if(l.some(c=>c.visibilityState==='visible'))return;return self.registration.showNotification(x.title||'SHORTS FLIX',{body:x.body||'',icon:'icons/icon.svg',badge:'icons/icon.svg',tag:x.tag,data:{url:x.url||'./'}})}))});
+self.addEventListener('notificationclick',e=>{e.notification.close();const u=new URL(e.notification.data.url||'./',self.registration.scope).href;e.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(l=>{for(const c of l){if('focus'in c){c.navigate(u);return c.focus()}}return clients.openWindow(u)}))});
